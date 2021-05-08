@@ -1,6 +1,5 @@
 import React from 'react' 
-import { Container, FormControl, ListGroup, ListGroupItem } from 'react-bootstrap';
-
+import {Container, Form, ListGroup } from 'react-bootstrap';
 
 class MovieGallery extends React.Component{
 
@@ -8,37 +7,43 @@ class MovieGallery extends React.Component{
         super(props);
 
         this.state={
-            text:''
+                     text:''
                 }
     }
 
     userInput= (event) => {
-
         const val= event.target.value;
         this.setState({  
-
-                text: val
-             })
+                     text: val
+                  })
         this.props.searchMovie(val)
+    }
+
+    ChooseMovie = (index) =>{
+        this.props.choosenMovie(index)
+        this.setState({
+                     text: ''
+                            })
+        this.props.searchMovie('')           
+
     }
 
 
     render(){
-
-                const movieList= this.props.movieList.map((movie) =>{
-                         return    <ListGroupItem action>
+                const listOfMovies= this.props.movieList.map((movie, index) =>{
+                         return    <ListGroup.Item action key ={index} onClick={()=>{this.ChooseMovie(index)}}>
                                          {movie.title}
-                                     </ListGroupItem>
+                                         </ListGroup.Item>
                               
                 } )
 
         return(
                 <div> 
-                    <Container>
-                        <FormControl type="text" value= {this.state.text} onChange={this.userInput}></FormControl>
+                    <Container sm={6} md={4} lg={3} >
+                        <Form.Control type="text" value= {this.state.text} onChange={this.userInput} placeholder="search movie"/>
                         <ListGroup variant="flush">
-                                {movieList}
-                          </ListGroup> 
+                                {listOfMovies}
+                        </ListGroup>
                     </Container>
                     </div>
         )
