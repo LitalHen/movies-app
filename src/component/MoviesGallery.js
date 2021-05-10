@@ -38,17 +38,13 @@ class MovieGallery extends React.Component{
     }
 
     searchMovie = (searchText) => {
-        let id='';
-        
+   
         fetch (`https://api.themoviedb.org/3/search/movie?api_key=e23d4bbe9541db53d2d48b97b8c30b05&language=en-US&query=${searchText}&page=1&include_adult=false`)
         .then(res=> res.json())
         .then (res => {
-            const movieObj={};
+            
           if(res && res.results){
-          
               const newResults= res.results.map((movie) => {
-                     id=movie.id;
-                    
                         return {
                           title: movie.original_title,
                           poster: movie.poster_path,
@@ -56,21 +52,12 @@ class MovieGallery extends React.Component{
                           }
                       })
                 
-                        fetch (`https://api.themoviedb.org/3/movie/${id}?api_key=e23d4bbe9541db53d2d48b97b8c30b05&language=en-US`)
-                        .then(res => res.json())
-                        .then(res => {
-                        if(res){
-                            movieObj.runtime= res.runtime;
-                            movieObj.id=res.id;
-                                    this.setState({
-                                        movieList:newResults,
-                                        movieObject:movieObj,
-                                        movieId: movieObj.id
-                                        // inputText:searchText
-                                    })
-                                       }
-
-                                    })
+                        this.setState({
+                            movieList:newResults,
+    
+                            // inputText:searchText
+                        })         
+                                    
                                 }
 
                                 })
@@ -81,6 +68,7 @@ class MovieGallery extends React.Component{
         const selectedMovie= this.state.currentMovie.map((movie) => {
             return <div>
                      <Col>
+                   
                         <Card key={movie.id} sm={6} md={4} lg={3} style={{ width: '18rem' }}>
                             <Card.Img variant="top" src={`https://www.themoviedb.org/t/p/w600_and_h900_bestv2${movie.poster}`}/>
                                 <Card.Body>
