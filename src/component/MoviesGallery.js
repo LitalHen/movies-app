@@ -1,8 +1,6 @@
 import React from 'react' 
-import {Card, Col, Container, Form, Row} from 'react-bootstrap';
+import {Container, Form, Jumbotron, ListGroup} from 'react-bootstrap';
 import MovieCard from './MovieCard';
-import MovieDetails from './MovieDetails';
-import { HashRouter, Link, Route } from 'react-router-dom';
 class MovieGallery extends React.Component{
 
     constructor(props){
@@ -35,6 +33,7 @@ class MovieGallery extends React.Component{
           movieList:[],
           text: ''
             })
+            this.searchMovie('')  
     }
 
     searchMovie = (searchText) => {
@@ -54,44 +53,34 @@ class MovieGallery extends React.Component{
                 
                         this.setState({
                             movieList:newResults,
-    
-                            // inputText:searchText
                         })         
-                                    
-                                }
+                    }
 
-                                })
-                        }
+                    })
+            }
 
     render(){
                
-        const selectedMovie= this.state.currentMovie.map((movie) => {
-            return <div>
-                     <Col>
-                   
-                        <Card key={movie.id} sm={6} md={4} lg={3} style={{ width: '18rem' }}>
-                            <Card.Img variant="top" src={`https://www.themoviedb.org/t/p/w600_and_h900_bestv2${movie.poster}`}/>
-                                <Card.Body>
-                                    <Card.Title> {movie.title} </Card.Title>
-                                </Card.Body>
-                                <Link to={`/movie/${movie.id}`}>Click For More</Link>
-                          </Card>
-                     </Col>
-                </div>    
-              })
+        const listOfMovies= this.state.movieList.map((movie, index) =>{
+            return    <ListGroup.Item action key ={index} onClick={()=>{this.choosenMovie(index)}}>
+                            {movie.title}
+                            </ListGroup.Item>
+                            } )
         return(
                 <div> 
+                    <Jumbotron>
+                       <h1> Movies Page</h1>
+                    </Jumbotron>
                        <Form.Control type="text" value= {this.state.text} onChange={this.userInput} placeholder="search movie"/>
-                            <MovieCard movieList={this.state.movieList}
-                                    searchMovie={this.searchMovie}
-                                    choosenMovie={this.choosenMovie}
+                        <Container sm={6} md={4} lg={3}>
+                                <ListGroup variant="flush">
+                                        {listOfMovies}
+                                </ListGroup>
+                            </Container>
+
+                            <MovieCard 
+                             currentMovie={this.state.currentMovie}
                                     />
-                        <Container>
-                            <Row>
-                            {selectedMovie}
-                            </Row>
-                        </Container>
-  
                      
                     </div>
         )
